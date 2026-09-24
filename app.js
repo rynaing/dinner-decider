@@ -8,7 +8,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const BUILD = "1790257032"; // replaced with a timestamp at deploy time
+const BUILD = "1790257854"; // replaced with a timestamp at deploy time
 
 let S = null;               // { sessionId, code, name, isHost }
 let phase = "propose", round = 1;
@@ -28,7 +28,7 @@ function loadStored() { try { return JSON.parse(sessionStorage.getItem("dd_sessi
 function api(path, opts = {}) {
   return fetch(SUPABASE_URL + "/rest/v1/" + path, {
     ...opts,
-    headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json", ...(opts.headers || {}) },
+    headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json", Prefer: "return=representation", ...(opts.headers || {}) },
   });
 }
 async function rpc(fn, body) {
