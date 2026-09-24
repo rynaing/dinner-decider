@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Dinner Decider — where should we eat?</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="styles.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+</head>
+<body>
+<div id="toast" class="hidden"></div>
+<header class="topbar">
+  <div class="logo">🍽️ Dinner Decider</div>
+  <div id="codeBadge" class="room-badge hidden"></div>
+  <button id="leaveBtn" class="ghost-btn hidden">Leave</button>
+</header>
+<main>
+  <!-- ============ HOME ============ -->
+  <section id="view-home" class="view">
+    <h1 class="hero">Dinner Decider</h1>
+    <p class="sub">Scan, propose, veto — one restaurant survives.</p>
+    <div class="home-grid">
+      <div class="join-card">
+        <label for="hostName">Your name</label>
+        <input id="hostName" placeholder="e.g. Ryan" maxlength="24" autocomplete="off" />
+        <button id="startBtn" class="big-btn" style="width:100%;margin-top:0.8rem">Start a session</button>
+      </div>
+      <div class="join-card">
+        <label>Join a session</label>
+        <div class="join-row">
+          <input id="joinCode" placeholder="CODE" maxlength="4" autocomplete="off" autocapitalize="characters" style="text-transform:uppercase" />
+          <input id="joinName" placeholder="Your name" maxlength="24" autocomplete="off" />
+        </div>
+        <button id="joinBtn" class="btn primary" style="width:100%;margin-top:0.8rem">Join</button>
+      </div>
+    </div>
+    <p class="hint">Everyone scans the host's QR code, proposes 1–2 spots, then vetoes one per round until a single winner remains.</p>
+  </section>
+
+  <!-- ============ SESSION ============ -->
+  <section id="view-session" class="view hidden">
+    <div id="phasePill" class="phase-pill"></div>
+
+    <div id="qrCard" class="card hidden" style="text-align:center">
+      <div class="qr-label">Scan to join</div>
+      <img id="qrImg" alt="Join QR code" />
+      <div class="qr-code-text" id="qrCodeText"></div>
+    </div>
+
+    <!-- PROPOSE -->
+    <div id="proposeView" class="hidden">
+      <div class="card">
+        <h3>Propose a restaurant <span class="muted-sm">(up to 2 each)</span></h3>
+        <label class="fld-label">Restaurant name *</label>
+        <input id="propName" placeholder="e.g. Yoma Cafe" maxlength="60" />
+        <label class="fld-label">Cuisine / food type *</label>
+        <input id="propCuisine" placeholder="e.g. Burmese, Sichuan, tacos" maxlength="40" />
+        <label class="fld-label">Note <span class="muted-sm">(optional)</span></label>
+        <input id="propNote" placeholder="e.g. cash only, BYOB, great noodles" maxlength="80" />
+        <button id="proposeBtn" class="btn primary" style="width:100%;margin-top:0.8rem">Add proposal</button>
+      </div>
+      <div id="proposeCount" class="count-line"></div>
+      <div id="hostProposeCtl" class="hidden" style="display:flex;gap:0.6rem;margin-bottom:1rem">
+        <button id="startVoteBtn" class="btn primary" style="flex:1">Start voting →</button>
+        <button id="randomBtn1" class="btn">🎲 Just pick randomly</button>
+      </div>
+      <h3>Proposals <span id="propTotal" class="muted-sm"></span></h3>
+      <div id="propList" class="prop-grid"></div>
+    </div>
+
+    <!-- VOTE -->
+    <div id="voteView" class="hidden">
+      <p class="vote-instr">Tap <b>ONE</b> restaurant to veto it. Most-vetoed spots get eliminated each round.</p>
+      <div id="vetoCount" class="count-line"></div>
+      <div id="voteGrid" class="prop-grid"></div>
+      <div id="hostVoteCtl" class="hidden" style="display:flex;gap:0.6rem;margin-top:1rem">
+        <button id="tallyBtn" class="btn primary" style="flex:1">Tally round</button>
+        <button id="randomBtn2" class="btn">🎲 Just pick randomly</button>
+      </div>
+      <div id="elimList"></div>
+    </div>
+
+    <!-- DONE -->
+    <div id="doneView" class="hidden" style="text-align:center">
+      <div class="winner-emoji">🏆</div>
+      <h2 class="winner-title">We're eating at…</h2>
+      <div id="winnerCard" class="card winner-card"></div>
+      <button id="newSessionBtn" class="btn primary" style="margin-top:1.2rem">Start a new session</button>
+    </div>
+
+    <div class="card" style="margin-top:1.5rem">
+      <h3 class="muted-sm" style="margin-top:0">Who's here</h3>
+      <div id="playerChips" class="chips"></div>
+    </div>
+  </section>
+</main>
+<div id="confettiBox"></div>
+<script src="app.js?v=1790256691"></script>
+</body>
+</html>
