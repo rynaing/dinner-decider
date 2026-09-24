@@ -8,7 +8,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const BUILD = "1790256691"; // replaced with a timestamp at deploy time
+const BUILD = "1790257032"; // replaced with a timestamp at deploy time
 
 let S = null;               // { sessionId, code, name, isHost }
 let phase = "propose", round = 1;
@@ -311,7 +311,7 @@ function init() {
   $("randomBtn1").onclick = randomPick;
   $("randomBtn2").onclick = randomPick;
   $("newSessionBtn").onclick = leaveSession;
-  [$("joinCode")].forEach((el) => el.addEventListener("keydown", (e) => { if (e.key === "Enter") joinSession(); });
+  [$("joinCode")].forEach((el) => el.addEventListener("keydown", (e) => { if (e.key === "Enter") joinSession(); }));
 
   const q = new URLSearchParams(location.search).get("code");
   if (q) $("joinCode").value = q.toUpperCase().slice(0, 4);
